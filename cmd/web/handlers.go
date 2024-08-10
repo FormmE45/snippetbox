@@ -3,9 +3,16 @@ package main
 import (
 	"fmt"
 	"html/template"
+	"log"
 	"net/http"
 	"strconv"
 )
+
+// Create a new application type
+type application struct {
+	errorLog *log.Logger
+	infoLog  *log.Logger
+}
 
 func (app *application) home(w http.ResponseWriter, r *http.Request) {
 	if r.URL.Path != "/" {
