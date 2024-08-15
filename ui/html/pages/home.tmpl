@@ -5,4 +5,23 @@
     {{block "sidebar"  .}}
         <h2>My default side bar</h2>
     {{end}}
+    {{if .Snippets}}
+        <table>
+            <tr>
+                <th>Title</th>
+                <th>Created</th>
+                <th>ID</th>
+            </tr>
+            {{range .Snippets}}
+            <tr>
+                <td><a href='/snippet/view?id={{.ID}}'>{{.Title}}</a></td>
+                <td>{{.Created}}</td>
+                <td>#{{.ID}}</td>
+            </tr>
+            {{end}}
+            </table>
+        </table>
+    {{else}}
+    <p>There's nothing to show here...yet!</p>
+    {{end}}
 {{end}}
