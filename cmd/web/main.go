@@ -7,7 +7,6 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"path/filepath"
 
 	_ "github.com/go-sql-driver/mysql"
 	"snippetbox.formme.net/internal/models"
@@ -20,37 +19,6 @@ type application struct {
 	templateCache map[string]*template.Template
 }
 
-func newTemplateCache() (map[string]*template.Template, error) {
-	//Create an empty map acting as a cache that contain the key-value pair
-	//(key as the template name,value as a Template corresponding to the key)
-	cache := map[string]*template.Template{}
-	//Get all the pages in the pages folder
-	pages, err := filepath.Glob("./ui/html/pages/*.tmpl")
-	if err != nil {
-		return nil, err
-	}
-	//Looping through the all the pages and create a Template corresponding
-	//to the name of the page
-	for _, page := range pages {
-		ts, err := template.ParseFiles("./ui/html/base.tmpl")
-		if err != nil {
-			return nil, err
-		}
-		ts, err = ts.ParseGlob("./ui/html/partials/*.tmpl")
-		if err != nil {
-			return nil, err
-		}
-		//ParseFiles created a new Template and parses
-		//the template definitions from the named file
-		ts, err = ts.ParseFiles(page)
-		if err != nil {
-			return nil, err
-		}
-		name := filepath.Base(page)
-		cache[name] = ts
-	}
-	return cache, nil
-}
 func main() {
 	//add a new flag named addr with default port number 4000 to change at run time
 	addr := flag.String("addr", ":4000", "HTTP network addr")
